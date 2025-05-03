@@ -86,7 +86,7 @@ dnf install mysql -y &>> $LOGFILE
 validate $? "installing mysql client"
 
 
-mysql -h mysql.aws76s.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> $LOGFILE
+mysql -h mysql.aws76s.online -uroot -pRoboShop@1 < /app/schema/shipping.sql 
 
 validate $? "loading schema"
 
