@@ -12,7 +12,7 @@ LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
 echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
 
-VALIDATE(){
+validate(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
@@ -45,21 +45,21 @@ fi
 
 mkdir -p /app
 
-VALIDATE $? "creating app directory"
+validate $? "creating app directory"
 
 curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip  &>> $LOGFILE
 
-VALIDATE $? "Downloading payment application"
+validate $? "Downloading payment application"
 
 cd /app 
 
 unzip -o /tmp/payment.zip  &>> $LOGFILE
 
-VALIDATE $? "unzipping payment"
+validate $? "unzipping payment"
 
 pip3.6 install -r requirements.txt &>> $LOGFILE
 
-VALIDATE $? "installing dependency pip3"
+validate $? "installing dependency pip3"
 
 cp /home/user/centos/roboshop_shell_new/payment.service /etc/systemd/system/payment.service &>> $LOGFILE
 
