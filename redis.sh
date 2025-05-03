@@ -10,7 +10,7 @@ MONGDB_HOST=mongodb.aws76s.online
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
-exec &>LOGFILE
+#exec &>LOGFILE
 
 
 echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
