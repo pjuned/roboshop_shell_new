@@ -5,14 +5,13 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-MONGDB_HOST=mongodb.aws76s.online
 
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
 echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
 
-VALIDATE(){
+validate(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
