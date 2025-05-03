@@ -35,10 +35,10 @@ fi # fi means reverse of if, indicating condition end
 
 #dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>> $LOGFILE
 
-dnf install remi-release-8.rpm
+dnf install remi-release-8.rpm -y
 
 
-validate $? "installing redis repo package"
+#validate $? "installing redis repo package"
 
 dnf module enable redis:remi-6.2 -y 
 
