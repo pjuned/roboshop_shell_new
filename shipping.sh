@@ -11,7 +11,7 @@ LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
 echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
 
-VALIDATE(){
+validate(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
@@ -37,57 +37,57 @@ id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then
     useradd roboshop
-    VALIDATE $? "roboshop user creation"
+    validate $? "roboshop user creation"
 else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
 mkdir -p /app
 
-VALIDATE $? "creating app directory"
+validate $? "creating app directory"
 
 curl -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip  &>> $LOGFILE
 
-VALIDATE $? "Downloading shipping application"
+validate $? "Downloading shipping application"
 
 cd /app 
 
 unzip -o /tmp/shipping.zip  &>> $LOGFILE
 
-VALIDATE $? "unzipping shipping"
+ $? "unzipping shipping"
 
 cd /app
 
 mvn clean package &>> LOGFILE
 
-VALIDATE $? "installing dependencies"
+validate $? "installing dependencies"
 
 mv target/shipping-1.0.jar shipping.jar
 
 systemctl daemon-reload &>> LOGFILE
 
-VALIDATE $? "loaing daemon"
+validate $? "loading daemon"
 
 systemctl enable shipping &>> LOGFILE
 
-VALIDATE $? "enable shipping"
+validate $? "enable shipping"
 
 systemctl start shipping &>> LOGFILE
 
-VALIDATE $? "starting shipping"
+validate $? "starting shipping"
 
 dnf install mysql -y &>> LOGFILE
 
-VALIDATE $? "installing mysql client"
+validate $? "installing mysql client"
 
 
 mysql -h mysql.aws76s.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> LOGFILE
 
-VALIDATE $? "loading schema"
+validate $? "loading schema"
 
 systemctl restart shipping 
 
-VALIDATE $? "restarting shipping"
+validate $? "restarting shipping"
 
 
 
