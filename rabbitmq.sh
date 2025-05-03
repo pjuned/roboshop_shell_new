@@ -39,23 +39,23 @@ curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/sc
 validate $? "downloading rabbitmq script"
 
 
-dnf install rabbitmq-server -y &>> LOGFILE
+dnf install rabbitmq-server -y &>> $LOGFILE
 
 validate $? "installing rabbitmq server"
 
-systemctl enable rabbitmq-server &>> LOGFILE
+systemctl enable rabbitmq-server &>> $LOGFILE
 
 validate $? "enabling rabbitmq"
 
-systemctl starting rabbitmq-server &>> LOGFILE
+systemctl starting rabbitmq-server &>> $LOGFILE
 
 validate $? "starting rabbitmq"
 
-rabbitmqctl add_user roboshop roboshop123 &>> LOGFILE
+rabbitmqctl add_user roboshop roboshop123 &>> $LOGFILE
 
 validate $? "creating username and password for rabbitmq"
 
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> LOGFILE
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOGFILE
 
 validate $? "setting user permissions"
 
