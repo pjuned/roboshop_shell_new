@@ -32,47 +32,47 @@ fi # fi means reverse of if, indicating condition end
 
 dnf module disable nodejs -y &>> $LOGFILE
 
-VALIDATE $? "Disabling current NodeJS"
+validate $? "Disabling current NodeJS"
 
 dnf module enable nodejs:18 -y  &>> $LOGFILE
 
-VALIDATE $? "Enabling NodeJS:18"
+validate $? "Enabling NodeJS:18"
 
 dnf install nodejs -y  &>> $LOGFILE
 
-VALIDATE $? "Installing NodeJS:18"
+validate $? "Installing NodeJS:18"
 
 id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then
     useradd roboshop
-    VALIDATE $? "roboshop user creation"
+    validate $? "roboshop user creation"
 else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
 mkdir -p /app
 
-VALIDATE $? "creating app directory"
+validate $? "creating app directory"
 
 curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  &>> $LOGFILE
 
-VALIDATE $? "Downloading user application"
+validate $? "Downloading user application"
 
 cd /app 
 
 unzip -o /tmp/user.zip  &>> $LOGFILE
 
-VALIDATE $? "unzipping user"
+validate $? "unzipping user"
 
 npm install  &>> $LOGFILE
 
-VALIDATE $? "Installing dependencies"
+validate $? "Installing dependencies"
 
 # use absolute, because catalogue.service exists there
 cp /home/centos/roboshop_shell_new/user.service /etc/systemd/system/user.service &>> $LOGFILE
 
-VALIDATE $? "Copying user service file"
+validate $? "Copying user service file"
 
 
 systemctl daemon-reload &>> $LOGFILE
