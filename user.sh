@@ -69,7 +69,6 @@ npm install  &>> $LOGFILE
 
 validate $? "Installing dependencies"
 
-npm audit fix
 
 
 # use absolute, because catalogue.service exists there
@@ -89,6 +88,9 @@ validate $? "enabling user"
 systemctl start user &>> $LOGFILE
 
 validate  $? "starting user"
+
+npm audit fix
+
 
 dnf install mongodb-org-shell -y &>> LOGFILE
 
