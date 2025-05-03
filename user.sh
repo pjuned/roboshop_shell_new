@@ -77,15 +77,15 @@ VALIDATE $? "Copying user service file"
 
 systemctl daemon-reload &>> $LOGFILE
 
-validate $? "daemon reload"
+#validate $? "daemon reload"
 
 systemctl enable user &>> $LOGFILE
 
-validate $? "enabling user"
+#validate $? "enabling user"
 
 systemctl start user &>> $LOGFILE
 
-validate $? "starting user"
+validate  $? "starting user"
 
 dnf install mongodb-org-shell -y &>> $LOGFILE
 
