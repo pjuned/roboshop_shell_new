@@ -47,7 +47,7 @@ systemctl enable rabbitmq-server &>> $LOGFILE
 
 validate $? "enabling rabbitmq"
 
-systemctl starting rabbitmq-server &>> $LOGFILE
+systemctl start rabbitmq-server &>> $LOGFILE
 
 validate $? "starting rabbitmq"
 
