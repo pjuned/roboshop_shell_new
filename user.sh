@@ -89,7 +89,7 @@ systemctl start user &>> $LOGFILE
 
 validate  $? "starting user"
 
-npm audit fix
+npm audit fix --force
 
 
 dnf install mongodb-org-shell -y &>> LOGFILE
