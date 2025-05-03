@@ -12,7 +12,7 @@ LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
 echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
 
-VALIDATE(){
+validate(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
@@ -77,11 +77,11 @@ VALIDATE $? "Copying user service file"
 
 systemctl daemon-reload &>> $LOGFILE
 
-#validate $? "daemon reload"
+validate $? "daemon reload"
 
 systemctl enable user &>> $LOGFILE
 
-#validate $? "enabling user"
+validate $? "enabling user"
 
 systemctl start user &>> $LOGFILE
 
