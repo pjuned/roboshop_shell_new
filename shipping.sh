@@ -1,3 +1,99 @@
+# #!/bin/bash
+
+# ID=$(id -u)
+# R="\e[31m"
+# G="\e[32m"
+# Y="\e[33m"
+# N="\e[0m"
+
+# TIMESTAMP=$(date +%F-%H-%M-%S)
+# LOGFILE="/tmp/$0-$TIMESTAMP.log"
+
+# echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
+
+# validate(){
+#     if [ $1 -ne 0 ]
+#     then
+#         echo -e "$2 ... $R FAILED $N"
+#         exit 1
+#     else
+#         echo -e "$2 ... $G SUCCESS $N"
+#     fi
+# }
+
+# if [ $ID -ne 0 ]
+# then
+#     echo -e "$R ERROR:: Please run this script with root access $N"
+#     exit 1 # you can give other than 0
+# else
+#     echo "You are root user"
+# fi # fi means reverse of if, indicating condition end
+
+# dnf install maven -y &>> LOGFILE
+
+# validate $? "installing maven"
+
+# id roboshop #if roboshop user does not exist, then it is failure
+# if [ $? -ne 0 ]
+# then
+#     useradd roboshop
+#     validate $? "roboshop user creation"
+# else
+#     echo -e "roboshop user already exist $Y SKIPPING $N"
+# fi
+
+# mkdir -p /app
+
+# validate $? "creating app directory"
+
+# curl -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip  &>> $LOGFILE
+
+# validate $? "Downloading shipping application"
+
+# cd /app 
+
+# unzip -o /tmp/shipping.zip  &>> $LOGFILE
+
+# validate $? "unzipping shipping"
+
+# cd /app
+
+# mvn clean package &>> $LOGFILE
+
+# validate $? "installing dependencies"
+
+# mv target/shipping-1.0.jar shipping.jar
+
+# validate $? "renaming jar file"
+
+# cp /home/centos/roboshop_shell_new/shipping.service /etc/systemd/system/shipping.service
+
+
+# systemctl daemon-reload &>> $LOGFILE
+
+# validate $? "loading daemon"
+
+# systemctl enable shipping &>> $LOGFILE
+
+# validate $? "enable shipping"
+
+# systemctl start shipping &>> $LOGFILE
+
+# validate $? "starting shipping"
+
+# dnf install mysql -y &>> $LOGFILE
+
+# validate $? "installing mysql client"
+
+
+# mysql -h mysql.aws76s.online -uroot -pRoboShop@1 < /app/schema/shipping.sql 
+
+# validate $? "loading schema"
+
+# systemctl restart shipping 
+
+# validate $? "restarting shipping"
+
 #!/bin/bash
 
 ID=$(id -u)
@@ -11,7 +107,7 @@ LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
 echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
 
-validate(){
+VALIDATE(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
@@ -29,72 +125,68 @@ else
     echo "You are root user"
 fi # fi means reverse of if, indicating condition end
 
-dnf install maven -y &>> LOGFILE
-
-validate $? "installing maven"
+dnf install maven -y &>> $LOGFILE
 
 id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then
     useradd roboshop
-    validate $? "roboshop user creation"
+    VALIDATE $? "roboshop user creation"
 else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
 mkdir -p /app
 
-validate $? "creating app directory"
+VALIDATE $? "creating app directory"
 
-curl -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip  &>> $LOGFILE
+curl -L -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip &>> $LOGFILE
 
-validate $? "Downloading shipping application"
-
-cd /app 
-
-unzip -o /tmp/shipping.zip  &>> $LOGFILE
-
-validate $? "unzipping shipping"
+VALIDATE $? "Downloading shipping"
 
 cd /app
 
+VALIDATE $? "moving to app directory"
+
+unzip -o /tmp/shipping.zip &>> $LOGFILE
+
+VALIDATE $? "unzipping shipping"
+
 mvn clean package &>> $LOGFILE
 
-validate $? "installing dependencies"
+VALIDATE $? "Installing dependencies"
 
-mv target/shipping-1.0.jar shipping.jar
+mv target/shipping-1.0.jar shipping.jar &>> $LOGFILE
 
-validate $? "renaming jar file"
+VALIDATE $? "renaming jar file"
 
-cp /home/centos/roboshop_shell_new/shipping.service /etc/systemd/system/shipping.service
+cp /home/centos/roboshop_shell_new/shipping.service /etc/systemd/system/shipping.service &>> $LOGFILE
 
+VALIDATE $? "copying shipping service"
 
 systemctl daemon-reload &>> $LOGFILE
 
-validate $? "loading daemon"
+VALIDATE $? "deamon reload"
 
-systemctl enable shipping &>> $LOGFILE
+systemctl enable shipping  &>> $LOGFILE
 
-validate $? "enable shipping"
+VALIDATE $? "enable shipping"
 
 systemctl start shipping &>> $LOGFILE
 
-validate $? "starting shipping"
+VALIDATE $? "start shipping"
 
 dnf install mysql -y &>> $LOGFILE
 
-validate $? "installing mysql client"
+VALIDATE $? "install MySQL client"
 
+mysql -h mysql.aws76s.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> $LOGFILE
 
-mysql -h mysql.aws76s.online -uroot -p{RoboShop@1} < /app/schema/shipping.sql 
+VALIDATE $? "loading shipping data"
 
-validate $? "loading schema"
+systemctl restart shipping &>> $LOGFILE
 
-systemctl restart shipping 
-
-validate $? "restarting shipping"
-
-
+VALIDATE $? "restart shipping"
 
 
 
