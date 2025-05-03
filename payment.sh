@@ -49,11 +49,11 @@ VALIDATE $? "creating app directory"
 
 curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip  &>> $LOGFILE
 
-VALIDATE $? "Downloading catalogue application"
+VALIDATE $? "Downloading payment application"
 
 cd /app 
 
-unzip -o /tmp/catalogue.zip  &>> $LOGFILE
+unzip -o /tmp/payment.zip  &>> $LOGFILE
 
 VALIDATE $? "unzipping payment"
 
