@@ -33,58 +33,56 @@ else
     echo "You are root user"
 fi # fi means reverse of if, indicating condition end
 
-# #dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>> $LOGFILE
-
-# dnf install remi-release-8.rpm --skip-broken -y
+dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>> $LOGFILE
 
 
-# #validate $? "installing redis repo package"
+validate $? "installing redis repo package"
 
-# dnf module enable redis:remi-6.2 -y 
-
-
-# validate $? "enabling redis 6.2" 
-
-# dnf install redis -y 
-
-# validate $? "installing redis"
-
-# sec -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf
+dnf module enable redis:remi-6.2 -y 
 
 
-# validate $? "allowing remote connections"
+validate $? "enabling redis 6.2" 
 
-# systemctl enable redis 
+dnf install redis -y 
 
-# validate $? "enabling resis"
-
-# systemctl start redis 
-
-# validate $? "starting redis"
-
-
-#!/bin/bash
-
-# Enable EPEL and Remi repos
-dnf install -y epel-release
-dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-
-# Enable Redis module from Remi repo
-dnf module enable -y redis:remi-6.2
-
-# Install Redis
-dnf install -y redis
+validate $? "installing redis"
 
 sec -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf
 
 
 validate $? "allowing remote connections"
 
+systemctl enable redis 
 
-# Start and enable Redis
-systemctl enable redis
-systemctl start redis
+validate $? "enabling resis"
 
-# Check Redis status
-systemctl status redis
+systemctl start redis 
+
+validate $? "starting redis"
+
+
+# #!/bin/bash
+
+# # Enable EPEL and Remi repos
+# dnf install -y epel-release
+# dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+
+# # Enable Redis module from Remi repo
+# dnf module enable -y redis:remi-6.2
+
+# # Install Redis
+# dnf install -y redis
+
+# sec -i 's/127.0.0.1/0.0.0.0/g' /etc/redis/redis.conf
+
+
+# validate $? "allowing remote connections"
+
+
+# # Start and enable Redis
+# systemctl enable redis
+# systemctl start redis
+
+# # Check Redis status
+# systemctl status redis
 
