@@ -58,7 +58,7 @@ validate $? "unzipping shipping"
 
 cd /app
 
-mvn clean package &>> LOGFILE
+mvn clean package &>> $LOGFILE
 
 validate $? "installing dependencies"
 
@@ -69,24 +69,24 @@ validate $? "renaming jar file"
 cp /home/centos/roboshop_shell_new/shipping.service /etc/systemd/system/shipping.service
 
 
-systemctl daemon-reload &>> LOGFILE
+systemctl daemon-reload &>> $LOGFILE
 
 validate $? "loading daemon"
 
-systemctl enable shipping &>> LOGFILE
+systemctl enable shipping &>> $LOGFILE
 
 validate $? "enable shipping"
 
-systemctl start shipping &>> LOGFILE
+systemctl start shipping &>> $LOGFILE
 
 validate $? "starting shipping"
 
-dnf install mysql -y &>> LOGFILE
+dnf install mysql -y &>> $LOGFILE
 
 validate $? "installing mysql client"
 
 
-mysql -h mysql.aws76s.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> LOGFILE
+mysql -h mysql.aws76s.online -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> $LOGFILE
 
 validate $? "loading schema"
 
