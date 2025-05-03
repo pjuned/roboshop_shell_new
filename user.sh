@@ -87,9 +87,9 @@ systemctl start user &>> $LOGFILE
 
 validate  $? "starting user"
 
-dnf install mongodb-org-shell -y &>> $LOGFILE
+dnf install mongodb-org-shell -y
 
-validate $? "installing mongodb client"
+#validate $? "installing mongodb client"
 
 mongo --host mongodb.aws76s.online </app/schema/user.js
 
