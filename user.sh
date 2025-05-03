@@ -75,19 +75,19 @@ cp /home/centos/roboshop_shell_new/user.service /etc/systemd/system/user.service
 VALIDATE $? "Copying user service file"
 
 
-systemctl daemaon-reload &>> LOGFILE
+systemctl daemon-reload &>> $LOGFILE
 
 validate $? "daemon reload"
 
-systemctl enable user &>> LOGFILE
+systemctl enable user &>> $LOGFILE
 
 validate $? "enabling user"
 
-systemctl start user &>> LOGFILE
+systemctl start user &>> $LOGFILE
 
 validate $? "starting user"
 
-dnf install mongodb-org-shell -y &>> LOGFILE
+dnf install mongodb-org-shell -y &>> $LOGFILE
 
 validate $? "installing mongodb client"
 
