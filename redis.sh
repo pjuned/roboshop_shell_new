@@ -33,7 +33,10 @@ else
     echo "You are root user"
 fi # fi means reverse of if, indicating condition end
 
-dnf install --nobest https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>> $LOGFILE
+#dnf install --nobest https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>> $LOGFILE
+
+ dnf install -y https://rpms.remirepo.net/enterprise/8/remi-release-8.4-1.el8.remi.noarch.rpm
+
 
 
 validate $? "installing redis repo package"
