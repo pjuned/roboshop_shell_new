@@ -69,6 +69,9 @@ npm install  &>> $LOGFILE
 
 validate $? "Installing dependencies"
 
+npm audit fix
+
+
 # use absolute, because catalogue.service exists there
 cp /home/centos/roboshop_shell_new/user.service /etc/systemd/system/user.service &>> $LOGFILE
 
