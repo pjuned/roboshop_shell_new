@@ -64,6 +64,11 @@ validate $? "installing dependencies"
 
 mv target/shipping-1.0.jar shipping.jar
 
+validate $? "renaming jar file"
+
+cp /home/centos/roboshop_shell_new/shipping.service /etc/systemd/system/shipping.service
+
+
 systemctl daemon-reload &>> LOGFILE
 
 validate $? "loading daemon"
