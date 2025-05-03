@@ -47,7 +47,7 @@ mkdir -p /app
 
 VALIDATE $? "creating app directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip  &>> $LOGFILE
+curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip  &>> $LOGFILE
 
 VALIDATE $? "Downloading catalogue application"
 
@@ -55,13 +55,13 @@ cd /app
 
 unzip -o /tmp/catalogue.zip  &>> $LOGFILE
 
-VALIDATE $? "unzipping catalogue"
+VALIDATE $? "unzipping payment"
 
 pip3.6 install -r requirements.txt &>> $LOGFILE
 
 VALIDATE $? "installing dependency pip3"
 
-cp /home/user/centos/roboshop_shell_new /etc/systemd/system/payment.service &>> $LOGFILE
+cp /home/user/centos/roboshop_shell_new/payment.service /etc/systemd/system/payment.service &>> $LOGFILE
 
 systemctl daemon-reload &>> $LOGFILE
 
