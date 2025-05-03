@@ -54,7 +54,7 @@ cd /app
 
 unzip -o /tmp/shipping.zip  &>> $LOGFILE
 
- $? "unzipping shipping"
+validate $? "unzipping shipping"
 
 cd /app
 
