@@ -1,3 +1,105 @@
+# #!/bin/bash
+
+# ID=$(id -u)
+# R="\e[31m"
+# G="\e[32m"
+# Y="\e[33m"
+# N="\e[0m"
+# MONGDB_HOST=mongodb.aws76s.online
+
+# TIMESTAMP=$(date +%F-%H-%M-%S)
+# LOGFILE="/tmp/$0-$TIMESTAMP.log"
+
+# echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
+
+# validate(){
+#     if [ $1 -ne 0 ]
+#     then
+#         echo -e "$2 ... $R FAILED $N"
+#         exit 1
+#     else    
+#         echo -e "$2 ... $G SUCCESS $N"
+#     fi
+# }
+
+# if [ $ID -ne 0 ]
+# then
+#     echo -e "$R ERROR:: Please run this script with root access $N"
+#     exit 1 # you can give other than 0
+# else
+#     echo "You are root user"
+# fi # fi means reverse of if, indicating condition end
+
+# dnf module disable nodejs -y &>> $LOGFILE
+
+# validate $? "Disabling current NodeJS"
+
+# dnf module enable nodejs:18 -y  &>> $LOGFILE
+
+# validate $? "Enabling NodeJS:18"
+
+# dnf install nodejs -y  &>> $LOGFILE
+
+# validate $? "Installing NodeJS:18"
+
+# id roboshop #if roboshop user does not exist, then it is failure
+# if [ $? -ne 0 ]
+# then
+#     useradd roboshop
+#     validate $? "roboshop user creation"
+# else
+#     echo -e "roboshop user already exist $Y SKIPPING $N"
+# fi
+
+# mkdir -p /app
+
+# validate $? "creating app directory"
+
+# curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  &>> $LOGFILE
+
+# validate $? "Downloading user application"
+
+# cd /app 
+
+# unzip -o /tmp/user.zip  &>> $LOGFILE
+
+# validate $? "unzipping user"
+
+# npm install  &>> $LOGFILE
+
+# validate $? "Installing dependencies"
+
+
+
+# # use absolute, because catalogue.service exists there
+# cp /home/centos/roboshop_shell_new/user.service /etc/systemd/system/user.service &>> $LOGFILE
+
+# validate $? "Copying user service file"
+
+
+# systemctl daemon-reload &>> $LOGFILE
+
+# validate $? "daemon reload"
+
+# systemctl enable user &>> $LOGFILE
+
+# validate $? "enabling user"
+
+# systemctl start user &>> $LOGFILE
+
+# validate  $? "starting user"
+
+# npm audit fix --force
+
+
+# dnf install mongodb-org-shell -y &>> LOGFILE
+
+# validate $? "installing mongodb client"
+
+# mongo --host mongodb.aws76s.online </app/schema/user.js
+
+# validate $? "loading user data"
+
 #!/bin/bash
 
 ID=$(id -u)
@@ -5,19 +107,19 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-MONGDB_HOST=mongodb.aws76s.online
+MONGDB_HOST=mongodb.daws76s.online
 
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
 echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
 
-validate(){
+VALIDATE(){
     if [ $1 -ne 0 ]
     then
         echo -e "$2 ... $R FAILED $N"
         exit 1
-    else    
+    else
         echo -e "$2 ... $G SUCCESS $N"
     fi
 }
@@ -32,70 +134,67 @@ fi # fi means reverse of if, indicating condition end
 
 dnf module disable nodejs -y &>> $LOGFILE
 
-validate $? "Disabling current NodeJS"
+VALIDATE $? "Disabling current NodeJS"
 
 dnf module enable nodejs:18 -y  &>> $LOGFILE
 
-validate $? "Enabling NodeJS:18"
+VALIDATE $? "Enabling NodeJS:18"
 
 dnf install nodejs -y  &>> $LOGFILE
 
-validate $? "Installing NodeJS:18"
+VALIDATE $? "Installing NodeJS:18"
 
 id roboshop #if roboshop user does not exist, then it is failure
 if [ $? -ne 0 ]
 then
     useradd roboshop
-    validate $? "roboshop user creation"
+    VALIDATE $? "roboshop user creation"
 else
     echo -e "roboshop user already exist $Y SKIPPING $N"
 fi
 
 mkdir -p /app
 
-validate $? "creating app directory"
+VALIDATE $? "creating app directory"
 
 curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  &>> $LOGFILE
 
-validate $? "Downloading user application"
+VALIDATE $? "Downloading user application"
 
 cd /app 
 
 unzip -o /tmp/user.zip  &>> $LOGFILE
 
-validate $? "unzipping user"
+VALIDATE $? "unzipping user"
 
 npm install  &>> $LOGFILE
 
-validate $? "Installing dependencies"
+VALIDATE $? "Installing dependencies"
 
+cp /home/centos/roboshop-shell/user.service /etc/systemd/system/user.service
 
-
-# use absolute, because catalogue.service exists there
-cp /home/centos/roboshop_shell_new/user.service /etc/systemd/system/user.service &>> $LOGFILE
-
-validate $? "Copying user service file"
-
+VALIDATE $? "Copying user service file"
 
 systemctl daemon-reload &>> $LOGFILE
 
-validate $? "daemon reload"
+VALIDATE $? "user daemon reload"
 
 systemctl enable user &>> $LOGFILE
 
-validate $? "enabling user"
+VALIDATE $? "Enable user"
 
 systemctl start user &>> $LOGFILE
 
-validate  $? "starting user"
+VALIDATE $? "Starting user"
 
-npm audit fix --force
+cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo
 
+VALIDATE $? "copying mongodb repo"
 
-dnf install mongodb-org-shell -y &>> LOGFILE
+dnf install mongodb-org-shell -y &>> $LOGFILE
 
-validate $? "installing mongodb client"
+VALIDATE $? "Installing MongoDB client"
 
-mongo --host mongodb.aws76s.online </app/schema/user.js
+mongo --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
 
-validate $? "loading user data"
+VALIDATE $? "Loading user data into MongoDB"
