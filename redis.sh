@@ -33,10 +33,7 @@ else
     echo "You are root user"
 fi # fi means reverse of if, indicating condition end
 
-#dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm &>> $LOGFILE
-
-sudo curl -O https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-
+dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>> $LOGFILE
 
 validate $? "installing redis repo package"
 
